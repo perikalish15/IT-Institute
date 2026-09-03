@@ -1,0 +1,106 @@
+:root {
+  --primary-emerald: #059669;
+  --primary-dark: #047857;
+  --primary-light: #10b981;
+  --accent-mint: #34d399;
+  --bg-white: #ffffff;
+  --bg-mint-subtle: #f4fbf7;
+  --bg-mint-card: #e6f7ef;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --border-emerald: #d1fae5;
+  --shadow-emerald: 0 10px 25px -5px rgba(5, 150, 105, 0.12), 0 8px 10px -6px rgba(5, 150, 105, 0.08);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8faf9;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Custom Emerald Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f3;
+}
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+}
+
+/* Glassmorphism & Card Styles */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+}
+
+.emerald-gradient-bg {
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+}
+
+.emerald-text-gradient {
+  background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.emerald-btn {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.35);
+}
+
+.emerald-btn:hover {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(5, 150, 105, 0.45);
+}
+
+.emerald-btn-outline {
+  background: #ffffff;
+  color: #059669;
+  border: 2px solid #059669;
+  transition: all 0.25s ease-in-out;
+}
+
+.emerald-btn-outline:hover {
+  background: #f4fbf7;
+  border-color: #047857;
+  color: #047857;
+  transform: translateY(-2px);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+  }
+}
+
+.pulse-emerald {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}

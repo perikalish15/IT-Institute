@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+backend/__pycache__/
+*.pyc
+
+# Production Builds
+frontend/dist/
+frontend/build/
+.vercel/
+
+# Database & Environment
+backend/*.db
+.env
+.env.local
+
+# IDE & System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
