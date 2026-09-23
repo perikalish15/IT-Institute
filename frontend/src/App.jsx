@@ -11,6 +11,7 @@ import StudentDashboard from './components/StudentDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import Footer from './components/Footer';
 import { MOCK_COURSES, MOCK_STATS } from './data/mockData';
+import { supabase, isSupabaseConfigured } from './lib/supabaseClient';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('catalog');
@@ -39,6 +40,18 @@ export default function App() {
 
   const fetchInitialData = async () => {
     try {
+      if (isSupabaseConfigured) {
+        let query = supabase.from('courses').select('*');
+        if (selectedCategory !== 'All') {
+          query = query.eq('category', selectedCategory);
+        }
+        const { data, error } = await query;
+        if (!error && Array.isArray(data) && data.length > 0) {
+          setCourses(data);
+          return;
+        }
+      }
+
       const url = selectedCategory !== 'All' 
         ? `/api/courses?category=${encodeURIComponent(selectedCategory)}`
         : '/api/courses';
@@ -56,7 +69,7 @@ export default function App() {
         setStats(statsData);
       }
     } catch (err) {
-      console.log('Backend active or using fallback static data');
+      console.log('Backend or Supabase active');
     }
   };
 

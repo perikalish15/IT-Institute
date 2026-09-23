@@ -52,25 +52,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'institute_backend.wsgi.application'
 
-# Database configuration with Vercel serverless /tmp fallback
-LOCAL_DB_PATH = BASE_DIR / 'db.sqlite3'
-if os.environ.get('VERCEL') or not os.access(BASE_DIR, os.W_OK):
-    TMP_DB_PATH = Path('/tmp/db.sqlite3')
-    if not TMP_DB_PATH.exists() and LOCAL_DB_PATH.exists():
-        try:
-            shutil.copyfile(LOCAL_DB_PATH, TMP_DB_PATH)
-        except Exception:
-            pass
-    DB_FILE = TMP_DB_PATH
-else:
-    DB_FILE = LOCAL_DB_PATH
+# Database configuration: Supabase PostgreSQL (if DATABASE_URL set) or SQLite fallback
+DATABASE_URL = os.environ.get('SUPABASE_DB_URL') or os.environ.get('DATABASE_URL')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DB_FILE,
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    LOCAL_DB_PATH = BASE_DIR / 'db.sqlite3'
+    if os.environ.get('VERCEL') or not os.access(BASE_DIR, os.W_OK):
+        TMP_DB_PATH = Path('/tmp/db.sqlite3')
+        if not TMP_DB_PATH.exists() and LOCAL_DB_PATH.exists():
+            try:
+                shutil.copyfile(LOCAL_DB_PATH, TMP_DB_PATH)
+            except Exception:
+                pass
+        DB_FILE = TMP_DB_PATH
+    else:
+        DB_FILE = LOCAL_DB_PATH
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_FILE,
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = []
 

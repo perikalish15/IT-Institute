@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Plus, BookOpen, Users, DollarSign, Calendar, RefreshCw, CheckCircle2, TrendingUp, Mail, Lock, LogIn, Key, Sparkles, UserPlus, CreditCard } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 export default function AdminDashboard({ stats, courses, onRefreshCourses, currentUser, onLoginSuccess, onLogout }) {
   const [activeTab, setActiveTab] = useState('overview');
@@ -50,6 +51,18 @@ export default function AdminDashboard({ stats, courses, onRefreshCourses, curre
 
   const fetchAdminData = async () => {
     try {
+      if (isSupabaseConfigured) {
+        const [eRes, dRes, iRes] = await Promise.all([
+          supabase.from('enrollments').select('*').order('id', { ascending: false }),
+          supabase.from('demo_bookings').select('*').order('id', { ascending: false }),
+          supabase.from('inquiries').select('*').order('id', { ascending: false })
+        ]);
+        if (eRes.data) setEnrollments(eRes.data);
+        if (dRes.data) setDemoBookings(dRes.data);
+        if (iRes.data) setInquiries(iRes.data);
+        if (eRes.data || dRes.data) return;
+      }
+
       const [eRes, dRes, iRes] = await Promise.all([
         fetch('/api/enrollments').then(r => r.json()).catch(() => []),
         fetch('/api/demo-bookings').then(r => r.json()).catch(() => []),

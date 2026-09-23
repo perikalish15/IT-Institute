@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Award, BookOpen, CheckCircle2, Download, PlayCircle, FileText, Sparkles, ShieldCheck, Search, LogIn, UserPlus, Lock, Mail, User as UserIcon } from 'lucide-react';
+import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 
 export default function StudentDashboard({ currentUser, onLoginSuccess }) {
   const [activeTab, setActiveTab] = useState('courses');
@@ -25,6 +26,14 @@ export default function StudentDashboard({ currentUser, onLoginSuccess }) {
 
   const fetchStudentCourses = async (email) => {
     try {
+      if (isSupabaseConfigured) {
+        const { data, error } = await supabase.from('enrollments').select('*').ilike('student_email', email);
+        if (!error && Array.isArray(data) && data.length > 0) {
+          setEnrolledCoursesList(data);
+          return;
+        }
+      }
+
       const res = await fetch(`/api/student/courses?email=${encodeURIComponent(email)}`);
       if (res.ok) {
         const data = await res.json();
