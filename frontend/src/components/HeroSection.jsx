@@ -1,8 +1,20 @@
 import React from 'react';
-import { Search, Sparkles, CheckCircle2, ShieldCheck, Users, Briefcase, Award, ArrowRight, PlayCircle } from 'lucide-react';
+import { Search, Sparkles, CheckCircle2, ShieldCheck, Users, Briefcase, Award, ArrowRight, PlayCircle, X } from 'lucide-react';
 
-export default function HeroSection({ searchFilter, setSearchFilter, selectedCategory, setSelectedCategory, onOpenDemoModal, stats }) {
+export default function HeroSection({ searchFilter, setSearchFilter, selectedCategory, setSelectedCategory, onOpenDemoModal, stats, courses = [], onSelectCourse }) {
   const categories = ['All', 'Software Engineering', 'Data & AI', 'Cloud & Infrastructure', 'Cybersecurity', 'Frontend & Web'];
+
+  const searchResults = searchFilter && searchFilter.trim() !== ''
+    ? courses.filter((course) => {
+        const q = searchFilter.toLowerCase().trim();
+        return (
+          course.title?.toLowerCase().includes(q) ||
+          course.category?.toLowerCase().includes(q) ||
+          course.description?.toLowerCase().includes(q) ||
+          (course.tags && course.tags.some((t) => t.toLowerCase().includes(q)))
+        );
+      })
+    : [];
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/40 via-white to-white py-12 lg:py-16 border-b border-emerald-100/60">
@@ -65,9 +77,9 @@ export default function HeroSection({ searchFilter, setSearchFilter, selectedCat
               </div>
             </div>
 
-            {/* Search Input Bar */}
-            <div className="pt-2">
-              <div className="relative max-w-xl bg-white rounded-2xl p-2 shadow-xl shadow-emerald-900/5 border border-emerald-200/80 flex items-center">
+            {/* Search Input Bar & Live Search Dropdown */}
+            <div className="pt-2 relative max-w-xl">
+              <div className="relative bg-white rounded-2xl p-2 shadow-xl shadow-emerald-900/5 border border-emerald-200/80 flex items-center">
                 <Search className="w-5 h-5 text-emerald-600 ml-3 flex-shrink-0" />
                 <input
                   type="text"
@@ -76,6 +88,15 @@ export default function HeroSection({ searchFilter, setSearchFilter, selectedCat
                   onChange={(e) => setSearchFilter(e.target.value)}
                   className="w-full pl-3 pr-4 py-2.5 text-sm bg-transparent border-none focus:outline-none focus:ring-0 text-slate-800 placeholder-slate-400 font-medium"
                 />
+                {searchFilter && (
+                  <button
+                    onClick={() => setSearchFilter('')}
+                    className="p-1.5 text-slate-400 hover:text-slate-600 mr-1 rounded-full hover:bg-slate-100 transition-colors"
+                    title="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
                 <button
                   onClick={onOpenDemoModal}
                   className="emerald-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center space-x-1.5 flex-shrink-0"
@@ -84,6 +105,61 @@ export default function HeroSection({ searchFilter, setSearchFilter, selectedCat
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
+
+              {/* Live Search Results Dropdown Overlay */}
+              {searchFilter && searchFilter.trim() !== '' && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-emerald-200 z-50 overflow-hidden max-h-96 overflow-y-auto divide-y divide-slate-100">
+                  <div className="px-4 py-2.5 bg-emerald-50/90 flex items-center justify-between text-xs font-bold text-emerald-900 border-b border-emerald-100 sticky top-0 bg-emerald-50/95 backdrop-blur-sm z-10">
+                    <span>Matching Courses ({searchResults.length})</span>
+                    <span className="text-[10px] text-emerald-700 font-normal">Click course to open details</span>
+                  </div>
+
+                  {searchResults.length === 0 ? (
+                    <div className="p-6 text-center text-slate-500 text-sm">
+                      <p className="font-semibold text-slate-700">No courses match "{searchFilter}"</p>
+                      <p className="text-xs text-slate-400 mt-1">Try searching for "Python", "AI", "Cloud", "Frontend" or "Cyber"</p>
+                    </div>
+                  ) : (
+                    searchResults.map((course) => (
+                      <div
+                        key={course.id}
+                        onClick={() => {
+                          if (onSelectCourse) onSelectCourse(course);
+                        }}
+                        className="p-3 hover:bg-emerald-50/70 cursor-pointer transition-colors flex items-center space-x-3.5 group"
+                      >
+                        <img
+                          src={course.image || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300'}
+                          alt={course.title}
+                          className="w-12 h-12 rounded-xl object-cover flex-shrink-0 border border-emerald-100 group-hover:scale-105 transition-transform"
+                        />
+                        <div className="flex-grow min-w-0">
+                          <div className="flex items-center space-x-2">
+                            <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                              {course.category}
+                            </span>
+                            {course.level && (
+                              <span className="text-[10px] font-medium text-slate-400">
+                                • {course.level}
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="text-sm font-bold text-slate-900 truncate group-hover:text-emerald-700 transition-colors mt-0.5">
+                            {course.title}
+                          </h4>
+                          <div className="flex items-center space-x-3 text-xs font-bold text-slate-700 mt-0.5">
+                            <span className="text-emerald-600 font-extrabold">${course.price}</span>
+                            <span className="text-slate-400 font-normal">• {course.duration}</span>
+                            {course.rating && <span className="text-amber-500 font-medium">★ {course.rating}</span>}
+                          </div>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
 
               {/* Category Filter Chips */}
               <div className="flex items-center space-x-2 overflow-x-auto pt-4 pb-2 scrollbar-none">
@@ -104,7 +180,6 @@ export default function HeroSection({ searchFilter, setSearchFilter, selectedCat
                   </button>
                 ))}
               </div>
-            </div>
 
           </div>
 

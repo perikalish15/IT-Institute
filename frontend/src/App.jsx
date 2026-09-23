@@ -130,6 +130,8 @@ export default function App() {
               setSelectedCategory={setSelectedCategory}
               onOpenDemoModal={() => setIsDemoModalOpen(true)}
               stats={stats}
+              courses={courses}
+              onSelectCourse={(c) => setSelectedCourseForModal(c)}
             />
 
             {/* Courses Catalog Section */}
