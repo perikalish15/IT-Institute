@@ -330,7 +330,7 @@ export default function StudentDashboard({ currentUser, onLoginSuccess }) {
       </div>
 
       {/* Tabs Navbar */}
-      <div className="flex border-b border-slate-200 space-x-4">
+      <div className="flex border-b border-slate-200 space-x-4 overflow-x-auto whitespace-nowrap scrollbar-none pb-1">
         <button
           onClick={() => setActiveTab('courses')}
           className={`pb-3 font-bold text-sm flex items-center space-x-2 border-b-2 transition-colors ${
@@ -473,7 +473,7 @@ export default function StudentDashboard({ currentUser, onLoginSuccess }) {
           </div>
 
           {/* Render Certificate Document */}
-          <div className="bg-gradient-to-b from-white to-emerald-50/40 p-8 sm:p-12 rounded-3xl border-4 border-emerald-600 shadow-2xl relative max-w-4xl mx-auto text-center space-y-6">
+          <div id="certificate-to-print" className="bg-gradient-to-b from-white to-emerald-50/40 p-8 sm:p-12 rounded-3xl border-4 border-emerald-600 shadow-2xl relative max-w-4xl mx-auto text-center space-y-6">
             
             <div className="flex justify-between items-center border-b border-emerald-200 pb-4">
               <div className="text-left">
@@ -525,7 +525,7 @@ export default function StudentDashboard({ currentUser, onLoginSuccess }) {
               </div>
               <button
                 onClick={() => window.print()}
-                className="emerald-btn px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1.5"
+                className="emerald-btn px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1.5 no-print"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PDF Certificate</span>

@@ -65,12 +65,12 @@ export default function CourseCard({ course, onSelectCourse, onEnroll }) {
 
           {/* Tags */}
           <div className="flex flex-wrap gap-1.5 pt-1">
-            {(Array.isArray(course.tags) ? course.tags : (course.tags || '').split(',')).map((tag, idx) => (
+            {(Array.isArray(course.tags) ? course.tags : (typeof course.tags === 'string' ? course.tags.split(',') : [])).map((tag) => tag.trim()).filter(Boolean).map((tag, idx) => (
               <span 
                 key={idx} 
                 className="text-[10px] bg-emerald-50 text-emerald-800 font-semibold px-2 py-0.5 rounded-md border border-emerald-100"
               >
-                ✓ {tag.trim()}
+                ✓ {tag}
               </span>
             ))}
           </div>

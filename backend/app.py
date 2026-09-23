@@ -5,11 +5,16 @@ from datetime import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from database import init_db, SessionLocal, User, Course, Batch, Enrollment, DemoBooking, Inquiry, Certificate
+from seed import seed
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 init_db()
+try:
+    seed()
+except Exception as e:
+    print("Seed info:", e)
 
 @app.route("/api/health", methods=["GET"])
 def health_check():
@@ -391,12 +396,17 @@ def list_inquiries():
     return jsonify(res)
 
 # --- CERTIFICATES VERIFICATION ---
-@app.route("/api/certificates/<code_or_name>", methods=["GET"])
-def verify_certificate(code_or_name):
+@app.route("/api/certificates/<path:code_or_name>", methods=["GET"])
+@app.route("/api/certificates", methods=["GET"])
+def verify_certificate(code_or_name=None):
+    term = (code_or_name or request.args.get("code") or request.args.get("q") or "").strip()
+    if not term:
+        return jsonify({"valid": False, "message": "Search code or student name required."}), 400
+
     session = SessionLocal()
     cert = session.query(Certificate).filter(
-        (Certificate.certificate_code.ilike(code_or_name.strip())) | 
-        (Certificate.student_name.ilike(f"%{code_or_name.strip()}%"))
+        (Certificate.certificate_code.ilike(term)) | 
+        (Certificate.student_name.ilike(f"%{term}%"))
     ).first()
     
     if not cert:

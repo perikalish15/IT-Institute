@@ -4,7 +4,21 @@ from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, Text, Float, DateTime, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "institute.db")
+import shutil
+
+LOCAL_DB_PATH = os.path.join(os.path.dirname(__file__), "institute.db")
+
+# Detect Vercel environment or read-only filesystem
+if os.environ.get("VERCEL") or not os.access(os.path.dirname(__file__), os.W_OK):
+    DB_PATH = "/tmp/institute.db"
+    if not os.path.exists(DB_PATH) and os.path.exists(LOCAL_DB_PATH):
+        try:
+            shutil.copyfile(LOCAL_DB_PATH, DB_PATH)
+        except Exception:
+            pass
+else:
+    DB_PATH = LOCAL_DB_PATH
+
 ENGINE = create_engine(f"sqlite:///{DB_PATH}", echo=False, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=ENGINE)
 

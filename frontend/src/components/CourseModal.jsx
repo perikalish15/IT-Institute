@@ -69,7 +69,7 @@ export default function CourseModal({ course, onClose, onRegisterSuccess }) {
         </div>
 
         {/* Tab Toggle Bar */}
-        <div className="flex border-b border-slate-100 bg-slate-50/50 px-6">
+        <div className="flex border-b border-slate-100 bg-slate-50/50 px-4 sm:px-6 overflow-x-auto whitespace-nowrap scrollbar-none">
           <button
             onClick={() => setActiveTab('syllabus')}
             className={`py-3.5 px-4 font-bold text-sm border-b-2 flex items-center space-x-2 transition-colors ${

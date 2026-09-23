@@ -356,7 +356,7 @@ export default function AdminDashboard({ stats, courses, onRefreshCourses, curre
       </div>
 
       {/* Admin Nav Tabs */}
-      <div className="flex border-b border-slate-200 space-x-4">
+      <div className="flex border-b border-slate-200 space-x-4 overflow-x-auto whitespace-nowrap scrollbar-none pb-1">
         <button
           onClick={() => setActiveTab('overview')}
           className={`pb-3 font-bold text-sm flex items-center space-x-2 border-b-2 transition-colors ${
