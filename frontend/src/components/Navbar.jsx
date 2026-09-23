@@ -25,7 +25,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenDemoModal, curre
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between text-emerald-100">
           <div className="flex items-center space-x-2 truncate">
             <span className="bg-emerald-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full pulse-emerald">
-              ADMISSIONS OPEN
+              ADMISSS OPEN
             </span>
             <span className="truncate">🔥 September 2026 Cohort: Enroll now for 45% Early Bird Scholarship & Live Mentorship.</span>
           </div>
@@ -45,10 +45,10 @@ export default function Navbar({ activeTab, setActiveTab, onOpenDemoModal, curre
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
+
           {/* Brand Logo */}
-          <div 
-            onClick={() => handleNavClick('catalog')} 
+          <div
+            onClick={() => handleNavClick('catalog')}
             className="flex items-center space-x-3 cursor-pointer group"
           >
             <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-700 to-emerald-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/30 group-hover:scale-105 transition-transform">
@@ -78,18 +78,16 @@ export default function Navbar({ activeTab, setActiveTab, onOpenDemoModal, curre
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all ${
-                    isActive 
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-sm' 
+                  className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-sm font-semibold transition-all ${isActive
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-sm'
                       : 'text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/50'
-                  }`}
+                    }`}
                 >
                   <Icon className={`w-4 h-4 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
                   <span>{link.label}</span>
                   {link.badge && (
-                    <span className={`ml-1 text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
-                      isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
-                    }`}>
+                    <span className={`ml-1 text-[10px] font-bold px-1.5 py-0.2 rounded-full ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
+                      }`}>
                       {link.badge}
                     </span>
                   )}
@@ -153,9 +151,8 @@ export default function Navbar({ activeTab, setActiveTab, onOpenDemoModal, curre
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'text-slate-700 hover:bg-slate-50'
-                }`}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all ${isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'text-slate-700 hover:bg-slate-50'
+                  }`}
               >
                 <div className="flex items-center space-x-3">
                   <Icon className={`w-5 h-5 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
